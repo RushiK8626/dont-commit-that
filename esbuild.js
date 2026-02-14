@@ -55,7 +55,7 @@ async function main() {
 		sourcesContent: false,
 		platform: 'node',
 		outfile: 'dist/precommit.js',
-		external: [],
+		external: ['vscode'],
 		logLevel: 'silent',
 		plugins: [
 			esbuildProblemMatcherPlugin,

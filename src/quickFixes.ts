@@ -68,7 +68,7 @@ export class SecretQuickFixProvider implements vscode.CodeActionProvider {
         action.command = {
             title: "Move secret to env",
             command: "dontCommitThat.moveToEnv",
-            arguments: [document, key, value]
+            arguments: [document, diagnostic, key, value]
         };
 
         return action;
@@ -117,7 +117,7 @@ export class SecretQuickFixProvider implements vscode.CodeActionProvider {
         action.command = {
             title: "Ignore it always",
             command: "dontCommitThat.ignoreAlways",
-            arguments: [document, diagnostic, finding]
+            arguments: [document, finding]
         };
 
         return action;

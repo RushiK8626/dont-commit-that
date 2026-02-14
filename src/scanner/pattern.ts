@@ -1,3 +1,5 @@
+import * as vscode from 'vscode';
+
 export type Severity = "CRITICAL" | "HIGH" | "MEDIUM" | "LOW";
 
 interface Pattern {
@@ -5,6 +7,7 @@ interface Pattern {
   regex: RegExp;
   severity: Severity;
   confidence: number;
+  isCustom?: boolean;
 }
 
 export interface Finding {
@@ -16,7 +19,7 @@ export interface Finding {
   severity: string;
 }
 
-export const PATTERNS: Pattern[] = [
+export const defaultPatterns: Pattern[] = [
   {
     type: "RSA Private Key",
     regex: /-----BEGIN RSA PRIVATE KEY-----/,
@@ -132,3 +135,45 @@ export const PATTERNS: Pattern[] = [
     confidence: 0.6
   }
 ];
+
+export default function getPatterns(): Pattern[] {
+  const config = vscode.workspace.getConfiguration('dontCommitThat');
+  const userPatternsRaw = config.get<any[]>('customPatterns') || [];
+  const userPatterns: Pattern[] = userPatternsRaw.map((raw) => {
+    const type = raw.type || raw.name || 'Custom Pattern';
+    let regex: RegExp;
+    try {
+      regex = new RegExp(raw.regex, raw.flags || '');
+    } catch (e) {
+      console.warn('[dont-commit-that] Invalid custom pattern regex:', raw.regex, 'Error:', e);
+      return null;
+    }
+    return {
+      type,
+      regex,
+      severity: raw.severity || 'LOW',
+      confidence: typeof raw.confidence === 'number' ? raw.confidence : 0.5,
+      isCustom: true
+    };
+  }).filter(Boolean) as Pattern[];
+  return mergePatterns(defaultPatterns, userPatterns);
+}
+
+function mergePatterns(
+  defaults: Pattern[],
+  userPatterns: Pattern[]
+): Pattern[] {
+  const map = new Map<string, Pattern>();
+
+  for (const pattern of defaults) {
+    map.set(pattern.type, pattern);
+  }
+
+  for (const pattern of userPatterns) {
+    if (pattern && pattern.type && pattern.regex instanceof RegExp) {
+      map.set(pattern.type, pattern);
+    }
+  }
+
+  return Array.from(map.values());
+}

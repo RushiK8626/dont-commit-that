@@ -1,5 +1,5 @@
 import * as path from 'path';
-import { PATTERNS, Finding } from './pattern';
+import getPatterns, { Finding } from './pattern';
 import { hasIgnoreEntry } from '../ignore/ignoreStore';
 
 export function isOnceIgnored(
@@ -46,13 +46,19 @@ export function scanContent(text: string, file: string): Finding[] {
 
   const lines = text.split("\n");
 
+  const PATTERNS = getPatterns();
+
   for (const p of PATTERNS) {
     // Create a global regex to find all matches
     const globalRegex = new RegExp(p.regex.source, p.regex.flags + (p.regex.flags.includes('g') ? '' : 'g'));
     const matches = text.matchAll(globalRegex);
 
     for (const match of matches) {
-      if (!match || /example|dummy|test|changeme/i.test(match[0])) {
+      if (!match) {
+        continue;
+      }
+      // Only apply false-positive filter to built-in patterns, not custom ones
+      if (!p.isCustom && /example|dummy|test|changeme/i.test(match[0])) {
         continue;
       }
 

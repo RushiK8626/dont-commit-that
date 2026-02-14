@@ -10,9 +10,15 @@ A VS Code extension that prevents accidental commits of secrets, credentials, an
 - **Customizable Patterns** — Easily extend detection rules for your specific needs
 - **Visual Indicators** — See security warnings directly in the VS Code Problems panel
 
-## Demo
+## Screenshots
+*Diagnostic Message*
+![Warning Message](./images/warning.png)
 
-[Placeholder for demo screenshot/GIF]
+<br/>
+
+*Commit Error*
+![Commit Error](./images/commit-error.png)
+
 
 ## Installation
 

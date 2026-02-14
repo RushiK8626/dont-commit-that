@@ -40,7 +40,27 @@
         "command": "dontCommitThat.installGitHook",
         "title": "Don't Commit That: Install Git Pre-Commit Hook"
       }
-    ]
+    ],
+    "configuration": {
+      "title": "Don't Commit That: Custom Patterns",
+      "properties": {
+        "dontCommitThat.customPatterns": {
+          "type": "array",
+          "default": [],
+          "description": "User defined custom patterns",
+          "items": {
+            "type": "object",
+            "required": ["type", "regex"],
+            "properties": {
+              "name": { "type": "string" },
+              "regex": { "type": "RegExp" },
+              "description": { "type": "string" },
+              "flags": { "type": "string" }
+            }
+          }
+        }
+      }
+    }
   },
   "scripts": {
     "vscode:prepublish": "npm run package",
