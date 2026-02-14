@@ -92,18 +92,31 @@ Access these commands via the Command Palette (`Ctrl+Shift+P` or `Cmd+Shift+P`):
 
 ## Customization
 
+
 ### Adding Custom Patterns
 
-Edit `src/scanner/pattern.ts` to add or modify detection patterns:
+You can now define your own custom detection patterns directly in your VS Code `settings.json` using the `dontCommitThat.customPatterns` configuration. This allows you to add, remove, or modify patterns without editing the extension source code.
 
-```typescript
-// Example: Add a custom API key pattern
-{
-  name: 'Custom API Key',
-  pattern: /custom_api_key_[a-zA-Z0-9]{32}/g,
-  severity: 'high'
-}
+**Example:**
+
+```json
+"dontCommitThat.customPatterns": [
+  {
+    "type": "Custom API Key",
+    "regex": "custom_api_key_[a-zA-Z0-9]{32}",
+    "severity": "MEDIUM",
+    "confidence": "0.6"
+  }
+]
 ```
+
+**Pattern Object Properties:**
+- `name` (string): A label for your pattern
+- `regex` (string): The regular expression pattern (as a string, not a RegExp object)
+- `severity` (string) "CRITICAL" | "HIGH" | "MEDIUM" | "LOW"
+- `confidence` (number, optional): 0 - 1
+
+You can add as many custom patterns as you need. These will be used in addition to the built-in patterns.
 
 ### Configuring Ignore Rules
 
