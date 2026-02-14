@@ -2,23 +2,40 @@
   "name": "dont-commit-that",
   "displayName": "Don't Commit That!",
   "description": "Prevent accidental commits of secrets",
+  "publisher": "RushikeshKadepurkar",
   "version": "0.0.1",
+  "categories": [
+    "Linters",
+    "Other"
+  ],
+  "keywords": [
+    "security",
+    "secret-detection",
+    "credentials",
+    "api-key",
+    "token",
+    "password",
+    "git",
+    "pre-commit",
+    "linter",
+    "devops",
+    "compliance",
+    "scanning"
+  ],
+  "icon": "icon.png",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/RushiK8626/dont-commit-that"
+  },
   "engines": {
     "vscode": "^1.109.0"
   },
-  "categories": [
-    "Other"
-  ],
   "activationEvents": [
     "onStartupFinished"
   ],
   "main": "./dist/extension.js",
   "contributes": {
     "commands": [
-      {
-        "command": "dont-commit-that.helloWorld",
-        "title": "Hello World"
-      },
       {
         "command": "dontCommitThat.installGitHook",
         "title": "Don't Commit That: Install Git Pre-Commit Hook"
